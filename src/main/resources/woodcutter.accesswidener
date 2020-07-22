@@ -1,0 +1,5 @@
+accessWidener v1 named
+accessible class net/minecraft/screen/ScreenHandlerType$Factory
+accessible method net/minecraft/screen/ScreenHandlerType <init> (Lnet/minecraft/screen/ScreenHandlerType$Factory;)V
+accessible class net/minecraft/recipe/CuttingRecipe$Serializer$RecipeFactory
+accessible field net/minecraft/client/recipebook/ClientRecipeBook field_25622 Lorg/apache/logging/log4j/Logger;
