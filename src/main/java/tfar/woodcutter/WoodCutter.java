@@ -6,12 +6,16 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Material;
 import net.minecraft.client.recipebook.ClientRecipeBook;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.stat.StatFormatter;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.core.Filter;
@@ -23,16 +27,27 @@ public class WoodCutter implements ModInitializer, ClientModInitializer {
 
 	public static final String MODID = "woodcutter";
 
+	public static final Identifier ID = new Identifier(MODID,MODID);
+
+	public static final Identifier INTERACT_WITH_WOODCUTTER = register("interact_with_"+MODID, StatFormatter.DEFAULT);
+
 	public static Block woodcutter;
 	public static ScreenHandlerType<WoodCutterContainer> woodCutterContainer;
 	public static RecipeSerializer<WoodcuttingRecipe> WOODCUTTING;
 
 	@Override
 	public void onInitialize() {
-		woodcutter = Registry.register(Registry.BLOCK,new Identifier(MODID,MODID),new WoodCutterBlock(AbstractBlock.Settings.copy(Blocks.STONECUTTER)));
-		Registry.register(Registry.ITEM,new Identifier(MODID,MODID),new BlockItem(woodcutter,new Item.Settings().group(ItemGroup.DECORATIONS)));
-		woodCutterContainer = Registry.register(Registry.SCREEN_HANDLER,new Identifier(MODID,MODID) , new ScreenHandlerType<>(WoodCutterContainer::new));
+		woodcutter = Registry.register(Registry.BLOCK,ID,new WoodCutterBlock(AbstractBlock.Settings.of(Material.WOOD).strength(2.5F).sounds(BlockSoundGroup.WOOD)));
+		Registry.register(Registry.ITEM,ID,new BlockItem(woodcutter,new Item.Settings().group(ItemGroup.DECORATIONS)));
+		woodCutterContainer = Registry.register(Registry.SCREEN_HANDLER,ID, new ScreenHandlerType<>(WoodCutterContainer::new));
 		WOODCUTTING = RecipeSerializer.register(WoodCutter.MODID +":woodcutting", new WoodcuttingRecipe.Serializer2<>(WoodcuttingRecipe::new));
+	}
+
+	private static Identifier register(String string, StatFormatter statFormatter) {
+		Identifier identifier = new Identifier(string);
+		Registry.register(Registry.CUSTOM_STAT, string, identifier);
+		Stats.CUSTOM.getOrCreateStat(identifier, statFormatter);
+		return identifier;
 	}
 
 	@Override
