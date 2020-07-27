@@ -107,8 +107,8 @@ public class WoodCutterScreen extends HandledScreen<WoodCutterContainer> {
 
 			for(int l = this.scrollOffset; l < k; ++l) {
 				int m = l - this.scrollOffset;
-				double d = mouseX - (double)(i + m % 4 * 16);
-				double e = mouseY - (double)(j + m / 4 * 18);
+				double d = mouseX - (i + m % 4d * 16);
+				double e = mouseY - (j + m / 4d * 18);
 				if (d >= 0.0D && e >= 0.0D && d < 16.0D && e < 18.0D && this.handler.onButtonClick(this.client.player, l)) {
 					MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
 					this.client.interactionManager.clickButton(this.handler.syncId, l);
@@ -130,9 +130,9 @@ public class WoodCutterScreen extends HandledScreen<WoodCutterContainer> {
 		if (this.mouseClicked && this.shouldScroll()) {
 			int i = this.y + 14;
 			int j = i + 54;
-			this.scrollAmount = ((float)mouseY - (float)i - 7.5F) / ((float)(j - i) - 15.0F);
+			this.scrollAmount = ((float)mouseY - i - 7.5F) / (j - i - 15.0F);
 			this.scrollAmount = MathHelper.clamp(this.scrollAmount, 0.0F, 1.0F);
-			this.scrollOffset = (int)((double)(this.scrollAmount * (float)this.getMaxScroll()) + 0.5D) * 4;
+			this.scrollOffset = (int)(this.scrollAmount * this.getMaxScroll() + 0.5D) * 4;
 			return true;
 		} else {
 			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
@@ -142,9 +142,9 @@ public class WoodCutterScreen extends HandledScreen<WoodCutterContainer> {
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
 		if (this.shouldScroll()) {
 			int i = this.getMaxScroll();
-			this.scrollAmount = (float)((double)this.scrollAmount - amount / (double)i);
+			this.scrollAmount -= amount / i;
 			this.scrollAmount = MathHelper.clamp(this.scrollAmount, 0.0F, 1.0F);
-			this.scrollOffset = (int)((double)(this.scrollAmount * (float)i) + 0.5D) * 4;
+			this.scrollOffset = (int)(this.scrollAmount * i + 0.5D) * 4;
 		}
 
 		return true;
@@ -164,6 +164,5 @@ public class WoodCutterScreen extends HandledScreen<WoodCutterContainer> {
 			this.scrollAmount = 0.0F;
 			this.scrollOffset = 0;
 		}
-
 	}
 }
