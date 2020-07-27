@@ -68,12 +68,8 @@ public class WoodCutter implements ModInitializer, ClientModInitializer {
 					toRemove = filter;
 			}
 		}
-		if (toRemove != null) {
-			((Logger) ClientRecipeBook.field_25622).getContext().removeFilter(toRemove);
-			System.out.println("Log spam from Recipe Book successfully neutralized");
-			((Logger) ClientRecipeBook.field_25622).getContext().addFilter(new ShutUpRecipeBookFilter());
-		} else {
-			System.out.println("Mission failed we'll get em next time");
-		}
+		((Logger) ClientRecipeBook.field_25622).getContext().removeFilter(toRemove);
+		((Logger) ClientRecipeBook.field_25622).getContext().addFilter(new ShutUpRecipeBookFilter());
+		System.out.println("Log spam from Recipe Book successfully neutralized");
 	}
 }
