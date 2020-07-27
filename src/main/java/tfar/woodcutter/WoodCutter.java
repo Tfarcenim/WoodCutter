@@ -2,11 +2,14 @@ package tfar.woodcutter;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.recipebook.ClientRecipeBook;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -37,6 +40,7 @@ public class WoodCutter implements ModInitializer, ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		BlockRenderLayerMap.INSTANCE.putBlock(woodcutter, RenderLayer.getCutout());
 		ScreenRegistry.register(woodCutterContainer,WoodCutterScreen::new);
 
 		Filter logfilter = ((Logger) ClientRecipeBook.field_25622).getContext().getConfiguration().getFilter();
